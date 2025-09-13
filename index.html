@@ -3,32 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>세로 이미지 리스트 (0913A~E)</title>
+  <title>세로 이미지 + 동영상 리스트 (0913A~E)</title>
   <style>
     /* 바깥 여백(#ddd 배경) */
-    html, body {
-      height: 100%;
-    }
+    html, body { height: 100%; }
     body {
       margin: 0;
-      background: #ddd; /* 메인 컨테이너 밖 배경색 */
+      background: #ddd;            /* 메인 컨테이너 밖 배경색 */
       display: flex;
-      justify-content: center; /* 가로 가운데 정렬 */
+      justify-content: center;     /* 가로 가운데 정렬 */
     }
 
     /* 메인 컨테이너 */
     .container {
-      width: 100vw;       /* 뷰포트 너비 기준 */
-      max-width: 560px;   /* 최대 560px */
-      background: #fff;   /* 컨테이너 내부는 흰색(선택) */
+      width: 100vw;                /* 뷰포트 너비 기준 */
+      max-width: 560px;            /* 최대 560px */
+      background: #fff;            /* 내부 배경(선택) */
       box-sizing: border-box;
     }
 
-    /* 세로 나열 이미지 */
+    /* 이미지 세로 나열 */
     .stack img {
       display: block;
       width: 100%;
-      height: auto;       /* 비율 유지 */
+      height: auto;                /* 비율 유지 */
+    }
+
+    /* 0913C.jpg 이후 동영상 섹션 */
+    .media-section {
+      background: #eceaec;         /* 요청한 배경색 */
+      padding-left: 7.5%;          /* 좌우 여백: 컨테이너 width의 7.5% */
+      padding-right: 7.5%;
+      box-sizing: border-box;
+    }
+
+    .video-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;                   /* 동영상 사이 간격 12px */
+      padding: 12px 0;             /* 위아래는 살짝 여백 */
+    }
+
+    .video-stack video {
+      display: block;
+      width: 100%;                 /* 가능한 영역 가득 채움 */
+      height: auto;                /* 원본 비율 유지 */
+    }
+
+    /* iOS 자동재생 대응(사파리) */
+    .video-stack video[autoplay] {
+      /* playsinline + muted 필요 → 아래 비디오 태그 속성에 반영 */
     }
   </style>
 </head>
@@ -38,6 +62,22 @@
       <img src="0913A.jpg" alt="0913A 이미지" />
       <img src="0913B.jpg" alt="0913B 이미지" />
       <img src="0913C.jpg" alt="0913C 이미지" />
+    </div>
+
+    <!-- 0913C.jpg 다음: 동영상 섹션 -->
+    <section class="media-section">
+      <div class="video-stack">
+        <video src="1-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="2-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="3-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="4-3.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="5-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="6-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="7-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+      </div>
+    </section>
+
+    <div class="stack">
       <img src="0913D.jpg" alt="0913D 이미지" />
       <img src="0913E.jpg" alt="0913E 이미지" />
     </div>
