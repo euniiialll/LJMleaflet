@@ -1,90 +1,160 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Nomal 공연 리플렛</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #000;
-      color: #fff;
-      text-align: center;
-    }
-    img, video {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 20px auto;
-      border-radius: 10px;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>New Nomal 공연 리플렛</title>
+<style>
+  :root { --w:390px; }
+  html,body{margin:0;background:#000;font-family:sans-serif;color:#fff}
+  .wrap{
+    width:var(--w);
+    margin:0 auto;
+    position:relative;
+    background:#111;
+    box-shadow:0 0 20px #000 inset;
+  }
+  /* 배경이미지를 컨테이너에 깔고, 높이는 원본 높이에 맞춰 JS로 자동 설정 */
+  .bg{
+    position:absolute; inset:0;
+    background:url("Leaflet.jpg") top left / 100% auto no-repeat;
+    pointer-events:none;
+  }
+  .vb{
+    position:absolute;
+    width:120px; /* 초기 너비(드래그 후 P로 좌표 추출해 고정하세요) */
+    border-radius:12px; overflow:hidden;
+    box-shadow:0 4px 16px rgba(0,0,0,.35);
+    outline:1px dashed rgba(255,255,255,.15);
+    cursor:move;
+  }
+  .vb video{width:100%;height:auto;display:block}
+  .hint{
+    position:fixed;left:8px;bottom:8px;right:8px;
+    color:#bbb;font-size:12px;line-height:1.6;opacity:.85
+  }
+  .grid::before{
+    content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.25;
+    background:
+      repeating-linear-gradient(to right, rgba(255,255,255,.05) 0 1px, transparent 1px 10px),
+      repeating-linear-gradient(to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 10px);
+  }
+</style>
 </head>
 <body>
-  <!-- 리플렛 메인 이미지 -->
-  <img src="Leaflet.jpg" alt="리플렛 메인 이미지">
+<div id="wrap" class="wrap">
+  <div class="bg"></div>
 
-  <!-- 공연 영상들 -->
-  <video autoplay loop muted playsinline controls>
-    <source src="1-2.mp4" type="video/mp4">
-  </video>
+  <!-- ▼▼ 영상 박스들: 처음엔 대충 세로로 깔아두었습니다. 드래그로 옮기고 크기 조절하세요 ▼▼ -->
+  <div class="vb" data-src="1-2.mp4"     style="top:200px; left:20px; width:120px;"></div>
+  <div class="vb" data-src="2-2.mp4"     style="top:500px; left:240px; width:120px;"></div>
+  <div class="vb" data-src="3-2.mp4"     style="top:900px; left:30px;  width:130px;"></div>
+  <div class="vb" data-src="4-3.mp4"     style="top:1300px;left:220px; width:120px;"></div>
+  <div class="vb" data-src="5-2.mp4"     style="top:1700px;left:40px;  width:130px;"></div>
+  <div class="vb" data-src="6-2.mp4"     style="top:2100px;left:230px; width:120px;"></div>
+  <div class="vb" data-src="7-2.mp4"     style="top:2450px;left:30px;  width:130px;"></div>
+  <div class="vb" data-src="김연아.mp4"   style="top:2800px;left:220px; width:120px;"></div>
+  <div class="vb" data-src="나경호.mp4"   style="top:3150px;left:30px;  width:130px;"></div>
+  <div class="vb" data-src="나정운.mp4"   style="top:3450px;left:230px; width:120px;"></div>
+  <div class="vb" data-src="이마드리드.mp4" style="top:3750px;left:30px;  width:130px;"></div>
+  <div class="vb" data-src="이정민.mp4"   style="top:4050px;left:230px; width:120px;"></div>
+  <div class="vb" data-src="이지윤.mp4"   style="top:4350px;left:30px;  width:130px;"></div>
+  <div class="vb" data-src="이창민.mp4"   style="top:4650px;left:230px; width:120px;"></div>
+  <div class="vb" data-src="홍성현.mp4"   style="top:4950px;left:30px;  width:130px;"></div>
+</div>
 
-  <video autoplay loop muted playsinline controls>
-    <source src="2-2.mp4" type="video/mp4">
-  </video>
+<div class="hint">
+  ▶ 드래그: 영상 박스 이동 / 마우스휠: 너비 조절(Shift+휠=미세조정) / **G**: 그리드 토글 / **P**: 위치 CSS 복사<br/>
+  - 배경 이미지는 <b>Leaflet.jpg</b> 파일을 사용합니다(폭 390px 기준). 원본 세로 길이에 맞춰 자동으로 높이를 잡습니다.<br/>
+  - 마지막에 **P**를 눌러 콘솔에 출력된 CSS를 복사해, 각 박스 style에 붙여넣으면 고정 배치 완료!
+</div>
 
-  <video autoplay loop muted playsinline controls>
-    <source src="3-2.mp4" type="video/mp4">
-  </video>
+<script>
+  // 1) 배경 높이를 원본 이미지 높이에 맞추기
+  (function(){
+    const wrap = document.getElementById('wrap');
+    const img = new Image();
+    img.onload = () => {
+      wrap.style.height = img.naturalHeight * (parseInt(getComputedStyle(wrap).width)/img.naturalWidth) + 'px';
+      // 그리드 도움선용 클래스
+      wrap.classList.add('grid');
+    };
+    img.src = 'Leaflet.jpg';
+  })();
 
-  <video autoplay loop muted playsinline controls>
-    <source src="4-3.mp4" type="video/mp4">
-  </video>
+  // 2) 각 박스에 video 요소 삽입
+  document.querySelectorAll('.vb').forEach(box=>{
+    const src = box.dataset.src;
+    const v = document.createElement('video');
+    v.autoplay = true; v.loop = true; v.muted = true; v.playsInline = true; v.controls = true;
+    const s = document.createElement('source'); s.src = src; s.type='video/mp4';
+    v.appendChild(s);
+    box.appendChild(v);
+  });
 
-  <video autoplay loop muted playsinline controls>
-    <source src="5-2.mp4" type="video/mp4">
-  </video>
+  // 3) 드래그 이동 + 휠로 너비 조절
+  let dragging = null, startX=0, startY=0, baseLeft=0, baseTop=0;
+  const wrap = document.getElementById('wrap');
 
-  <video autoplay loop muted playsinline controls>
-    <source src="6-2.mp4" type="video/mp4">
-  </video>
+  function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
 
-  <video autoplay loop muted playsinline controls>
-    <source src="7-2.mp4" type="video/mp4">
-  </video>
+  document.addEventListener('mousedown', (e)=>{
+    const t = e.target.closest('.vb');
+    if(!t) return;
+    dragging = t;
+    startX = e.clientX; startY = e.clientY;
+    const rect = t.getBoundingClientRect();
+    const wrect = wrap.getBoundingClientRect();
+    baseLeft = rect.left - wrect.left;
+    baseTop  = rect.top  - wrect.top;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', (e)=>{
+    if(!dragging) return;
+    const wrect = wrap.getBoundingClientRect();
+    let nx = baseLeft + (e.clientX - startX);
+    let ny = baseTop  + (e.clientY - startY);
+    nx = clamp(nx, 0, wrect.width - dragging.offsetWidth);
+    ny = clamp(ny, 0, wrect.height - dragging.offsetHeight);
+    dragging.style.left = nx + 'px';
+    dragging.style.top  = ny + 'px';
+  });
+  document.addEventListener('mouseup', ()=> dragging=null);
 
-  <video autoplay loop muted playsinline controls>
-    <source src="김연아.mp4" type="video/mp4">
-  </video>
+  // 마우스 휠로 너비 조절 (Shift+휠 = 미세조정)
+  document.addEventListener('wheel',(e)=>{
+    const t = e.target.closest('.vb');
+    if(!t) return;
+    e.preventDefault();
+    const step = e.shiftKey ? 2 : 10;
+    const w = Math.max(60, (parseInt(t.style.width||'120') + (e.deltaY>0 ? -step : step)));
+    const wrect = wrap.getBoundingClientRect();
+    // 우측 넘침 방지
+    const left = parseInt(t.style.left||'0');
+    const maxLeft = Math.max(0, wrect.width - w);
+    t.style.left = clamp(left, 0, maxLeft) + 'px';
+    t.style.width = w + 'px';
+  }, {passive:false});
 
-  <video autoplay loop muted playsinline controls>
-    <source src="나경호.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="나정운.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="이마드리드.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="이정민.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="이지윤.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="이창민.mp4" type="video/mp4">
-  </video>
-
-  <video autoplay loop muted playsinline controls>
-    <source src="홍성현.mp4" type="video/mp4">
-  </video>
-
+  // G: 그리드 토글
+  document.addEventListener('keydown',(e)=>{
+    if(e.key.toLowerCase()==='g'){
+      wrap.classList.toggle('grid');
+    }
+    // P: 현재 좌표 CSS 출력
+    if(e.key.toLowerCase()==='p'){
+      const css = [...document.querySelectorAll('.vb')].map((el,i)=>{
+        const top = el.style.top||'0px';
+        const left= el.style.left||'0px';
+        const wid = el.style.width||'120px';
+        const src = el.dataset.src;
+        return `<div class="vb" data-src="${src}" style="top:${top}; left:${left}; width:${wid};"></div>`;
+      }).join('\n');
+      console.clear();
+      console.log('▼ 아래를 index.html 안의 .vb 들에 그대로 붙여넣으면 고정됩니다 ▼\n'+css);
+      alert('개발자도구 콘솔에 좌표가 출력되었습니다! (P를 누르신 후, F12 → Console 탭에서 복사하세요)');
+    }
+  });
+</script>
 </body>
 </html>
