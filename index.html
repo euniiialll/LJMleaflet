@@ -3,67 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>New Nomal</title>
+  <title>세로 이미지 + 동영상 리스트 (0913A~E)</title>
   <style>
-    /* 바깥 여백(#ddd 배경) */
-    html, body { height: 100%; }
     body {
       margin: 0;
-      background: #ddd;            /* 메인 컨테이너 밖 배경색 */
+      background: #ddd;
       display: flex;
-      justify-content: center;     /* 가로 가운데 정렬 */
+      justify-content: center;
     }
 
-    /* 메인 컨테이너 */
     .container {
-      width: 100vw;                /* 뷰포트 너비 기준 */
-      max-width: 560px;            /* 최대 560px */
-      background: #fff;            /* 내부 배경(선택) */
+      width: 100vw;
+      max-width: 560px;
+      background: #fff;
       box-sizing: border-box;
     }
 
-    /* 이미지 세로 나열 */
     .stack img {
       display: block;
       width: 100%;
-      height: auto;                /* 비율 유지 */
+      height: auto;
     }
 
-    /* 0913C.jpg 이후 1열 비디오 섹션 */
     .media-section {
-      background: #eceaec;         /* 요청한 배경색 */
-      padding-left: 7.5%;          /* 좌우 여백: 컨테이너 width의 7.5% */
+      background: #eceaec;
+      padding-left: 7.5%;
       padding-right: 7.5%;
-      padding-bottom: 80px;        /* 하단 여백 */
+      padding-bottom: 80px;
       box-sizing: border-box;
     }
 
     .video-stack {
       display: flex;
       flex-direction: column;
-      gap: 12px;                   /* 동영상 사이 간격 12px */
-      padding: 12px 0;             /* 위아래는 살짝 여백 */
+      gap: 12px;
+      padding: 12px 0;
     }
 
     .video-stack video {
-      display: block;
-      width: 100%;                 /* 가능한 영역 가득 채움 */
-      height: auto;                /* 원본 비율 유지 */
+      width: 100%;
+      height: auto;
     }
 
-    /* 0913D.jpg 이후 2열×4행 비디오 섹션 */
+    /* profile 영상 2열 × 4행 */
     .media-grid {
-      background: #eceaec;         /* 동일 배경색 */
-      padding-left: 7.5%;          /* 동일 좌우 여백 */
+      background: #eceaec;
+      padding-left: 7.5%;
       padding-right: 7.5%;
-      padding-bottom: 80px;        /* 동일 하단 여백 */
+      padding-bottom: 80px;
       box-sizing: border-box;
     }
 
     .grid-stack {
       display: grid;
       grid-template-columns: 1fr 1fr; /* 2열 */
-      gap: 12px;                      /* 가로·세로 간격 12px */
+      gap: 12px;                      /* 가로/세로 간격 */
       padding: 12px 0;
     }
 
@@ -72,10 +66,19 @@
       flex-direction: column;
     }
 
-    .grid-item video {
-      display: block;
+    /* wrapper: 2:3 종횡비 적용 */
+    .video-wrapper {
+      position: relative;
       width: 100%;
-      height: auto;
+      aspect-ratio: 2 / 3; /* 2:3 비율 */
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 비율 맞추되 넘치는 부분 crop */
     }
 
     .grid-item figcaption {
@@ -83,7 +86,8 @@
       font-size: 12px;
       line-height: 1.4;
       color: #555;
-      word-break: break-all; /* 긴 파일명 대응 */
+      word-break: break-all;
+      text-align: center;
     }
 
     figure { margin: 0; }
@@ -97,7 +101,7 @@
       <img src="0913C.jpg" alt="0913C 이미지" />
     </div>
 
-    <!-- 0913C.jpg 다음: 1열 비디오 섹션 -->
+    <!-- 0913C.jpg 이후 1열 비디오 -->
     <section class="media-section">
       <div class="video-stack">
         <video src="1-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
@@ -114,39 +118,55 @@
       <img src="0913D.jpg" alt="0913D 이미지" />
     </div>
 
-    <!-- 0913D.jpg 다음: 2열×4행 비디오 섹션(좌우 여백 동일, gap 12px, 캡션 포함) -->
+    <!-- 0913D.jpg 이후 2열 × 4행 profile 비디오 -->
     <section class="media-grid">
       <div class="grid-stack">
         <figure class="grid-item">
-          <video src="profile1A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile1A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile1A.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile1B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile1B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile1B.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile2A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile2A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile2A.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile2B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile2B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile2B.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile3A.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile3B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile3B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile3B.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile4A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile4A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile4A.mp4</figcaption>
         </figure>
         <figure class="grid-item">
-          <video src="profile4B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          <div class="video-wrapper">
+            <video src="profile4B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
           <figcaption>profile4B.mp4</figcaption>
         </figure>
       </div>
