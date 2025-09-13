@@ -1,143 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>New Nomal 공연 리플렛</title>
-<style>
-  :root { --w:390px; }
-  html,body{margin:0;background:#000;font-family:sans-serif;color:#fff}
-  .wrap{width:var(--w);margin:0 auto;position:relative;background:#000}
-  .bg{position:absolute;inset:0;background:url("Leaflet2.jpg") top left/100% auto no-repeat;pointer-events:none}
-  /* 세로 스택(숫자 7개 영상) 기본 스타일 */
-  .stack{position:absolute; left:30px; top:300px; width:120px;}
-  .stack video{width:100%; height:auto; display:block; margin:0 0 8px 0}
-  /* 단원 프로필(개별 배치) */
-  .vb{position:absolute; border-radius:0; box-shadow:none; outline:none; overflow:hidden; cursor:move}
-  .vb video{width:100%; height:auto; display:block}
-  .hint{position:fixed;left:8px;right:8px;bottom:8px;color:#bbb;font-size:12px;line-height:1.6;opacity:.85}
-  .grid::before{
-    content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.2;
-    background:
-      repeating-linear-gradient(to right, rgba(255,255,255,.08) 0 1px, transparent 1px 10px),
-      repeating-linear-gradient(to bottom, rgba(255,255,255,.08) 0 1px, transparent 1px 10px);
-  }
-  .locked .vb{cursor:default}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>세로 이미지 리스트 (0913A~E)</title>
+  <style>
+    /* 바깥 여백(#ddd 배경) */
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      background: #ddd; /* 메인 컨테이너 밖 배경색 */
+      display: flex;
+      justify-content: center; /* 가로 가운데 정렬 */
+    }
+
+    /* 메인 컨테이너 */
+    .container {
+      width: 100vw;       /* 뷰포트 너비 기준 */
+      max-width: 560px;   /* 최대 560px */
+      background: #fff;   /* 컨테이너 내부는 흰색(선택) */
+      box-sizing: border-box;
+    }
+
+    /* 세로 나열 이미지 */
+    .stack img {
+      display: block;
+      width: 100%;
+      height: auto;       /* 비율 유지 */
+    }
+  </style>
 </head>
 <body>
-<div id="wrap" class="wrap">
-  <div class="bg"></div>
-
-  <!-- 숫자 7개 영상: 왼쪽 30px에서 시작, 8px 간격 세로 스택 -->
-  <div id="stack" class="stack" style="top:300px; left:30px; width:120px;">
-    <video autoplay loop muted playsinline preload="metadata"><source src="1-2.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="2-2.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="3-2.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="4-3.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="5-2.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="6-2.mp4" type="video/mp4"></video>
-    <video autoplay loop muted playsinline preload="metadata"><source src="7-2.mp4" type="video/mp4"></video>
-  </div>
-
-  <!-- 단원 프로필(개별 좌표) — 필요시 top/left/width 조정 -->
-  <div class="vb" data-src="김연아.mp4"         style="top:2680px; left:238px; width:120px;"></div>
-  <div class="vb" data-src="나경호.mp4"         style="top:3020px; left:28px;  width:134px;"></div>
-  <div class="vb" data-src="나정운.mp4"         style="top:3360px; left:238px; width:120px;"></div>
-  <div class="vb" data-src="이마드리드.mp4"     style="top:3700px; left:30px;  width:132px;"></div>
-  <div class="vb" data-src="안무자_이정민.mp4"   style="top:4040px; left:238px; width:120px;"></div>
-  <div class="vb" data-src="이지윤.mp4"         style="top:4380px; left:28px;  width:134px;"></div>
-  <div class="vb" data-src="이창민.mp4"         style="top:4720px; left:238px; width:120px;"></div>
-  <div class="vb" data-src="홍성현.mp4"         style="top:5060px; left:30px;  width:132px;"></div>
-</div>
-
-<div class="hint">
-  E: 편집/고정 · G: 그리드 · P: 좌표 출력(콘솔)<br/>
-  드래그=이동 · 휠=크기(Shift=미세). 배경은 <b>Leaflet2.jpg</b> 기준으로 비율 자동 맞춤.
-</div>
-
-<script>
-  // 컨테이너 높이를 Leaflet2.jpg 원본 비율에 맞게 자동 설정
-  (function(){
-    const wrap = document.getElementById('wrap');
-    const img = new Image();
-    img.onload = () => {
-      const w = parseInt(getComputedStyle(wrap).width);
-      wrap.style.height = (img.naturalHeight * (w / img.naturalWidth)) + 'px';
-      wrap.classList.add('grid'); // 보조 격자 켜기
-    };
-    img.src = 'Leaflet2.jpg'; // 대소문자 정확히
-  })();
-
-  // 단원 프로필 비디오 주입
-  document.querySelectorAll('.vb').forEach(b=>{
-    const v=document.createElement('video');
-    v.autoplay=true; v.loop=true; v.muted=true; v.playsInline=true; v.preload='metadata';
-    const s=document.createElement('source'); s.src=b.dataset.src; s.type='video/mp4';
-    v.appendChild(s); b.appendChild(v);
-  });
-
-  // 편집(드래그/리사이즈)
-  const wrap = document.getElementById('wrap');
-  let editing = true, dragging=null, startX=0, startY=0, baseL=0, baseT=0;
-
-  function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-  function setLocked(lock){
-    editing = !lock;
-    document.body.classList.toggle('locked', lock);
-  }
-
-  document.addEventListener('mousedown',e=>{
-    if(!editing) return;
-    const t=e.target.closest('.vb, #stack'); if(!t) return;
-    dragging=t;
-    const r=t.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
-    startX=e.clientX; startY=e.clientY; baseL=r.left-wr.left; baseT=r.top-wr.top; e.preventDefault();
-  });
-  document.addEventListener('mousemove',e=>{
-    if(!dragging||!editing) return;
-    const wr=wrap.getBoundingClientRect();
-    let nx=baseL+(e.clientX-startX), ny=baseT+(e.clientY-startY);
-    nx=clamp(nx,0,wr.width-dragging.offsetWidth);
-    ny=clamp(ny,0,wr.height-dragging.offsetHeight);
-    dragging.style.left=nx+'px'; dragging.style.top=ny+'px';
-  });
-  document.addEventListener('mouseup',()=>dragging=null);
-
-  // 휠로 너비 조절 (vb들만)
-  document.addEventListener('wheel',e=>{
-    if(!editing) return;
-    const t=e.target.closest('.vb'); if(!t) return;
-    e.preventDefault();
-    const step=e.shiftKey?2:10;
-    const newW=Math.max(60,(parseInt(t.style.width||'120') + (e.deltaY>0?-step:step)));
-    const wr=wrap.getBoundingClientRect();
-    const left=parseInt(t.style.left||'0'); const maxLeft=Math.max(0, wr.width-newW);
-    t.style.left=clamp(left,0,maxLeft)+'px';
-    t.style.width=newW+'px';
-  }, {passive:false});
-
-  // 단축키: E(편집 토글) / G(그리드) / P(좌표 출력)
-  document.addEventListener('keydown',e=>{
-    const k=e.key.toLowerCase();
-    if(k==='e'){ setLocked(editing); }
-    if(k==='g'){ wrap.classList.toggle('grid'); }
-    if(k==='p'){
-      const stack = document.getElementById('stack');
-      const out1 = `<div class="stack" style="top:${stack.style.top}; left:${stack.style.left}; width:${stack.style.width};">` +
-                   stack.innerHTML + `</div>`;
-      const out2 = [...document.querySelectorAll('.vb')].map(el=>{
-        const top=el.style.top||'0px', left=el.style.left||'0px', w=el.style.width||'120px', src=el.dataset.src;
-        return `<div class="vb" data-src="${src}" style="top:${top}; left:${left}; width:${w};"></div>`;
-      }).join('\n');
-      console.clear();
-      console.log('▼ 아래 블록을 .wrap 내부에 붙여넣으면 고정 배치가 됩니다 ▼\n'+out1+'\n'+out2);
-      alert('콘솔(F12) → Console 탭에 현재 좌표 블록이 출력되었습니다. 복사해 붙여넣어 고정하세요!');
-    }
-  });
-
-  // 시작은 편집 ON
-  setLocked(false);
-</script>
+  <main class="container">
+    <div class="stack">
+      <img src="0913A.jpg" alt="0913A 이미지" />
+      <img src="0913B.jpg" alt="0913B 이미지" />
+      <img src="0913C.jpg" alt="0913C 이미지" />
+      <img src="0913D.jpg" alt="0913D 이미지" />
+      <img src="0913E.jpg" alt="0913E 이미지" />
+    </div>
+  </main>
 </body>
 </html>
