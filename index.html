@@ -7,20 +7,13 @@
   <!-- Pretendard 웹폰트 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
   <style>
-    :root {
-      --side-gap: 7.5%;  /* 좌우 여백 (컨테이너 기준) */
-      --grid-gap: 12px;  /* 요소 사이 간격 */
-    }
-
     body {
       margin: 0;
-      background: #d1d0d2;   /* 컨테이너 밖 배경 */
+      background: #d1d0d2;
       display: flex;
       justify-content: center;
-      font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
 
-    /* 메인 컨테이너 */
     .container {
       width: 100vw;
       max-width: 560px;
@@ -28,67 +21,69 @@
       box-sizing: border-box;
     }
 
-    /* 배경 이미지 블록 (이미지를 '깔아놓고' 그 위에 오버레이 배치) */
-    .bg-block {
-      position: relative;
-    }
-    .bg-block img {
+    .stack img {
       display: block;
       width: 100%;
-      height: auto; /* 세로로 공백 없이 쭉 */
+      height: auto;
     }
 
-    /* 공통 오버레이 (배경 이미지 위에 떠서 배치) */
-    .overlay {
-      position: absolute;
-      left: var(--side-gap);
-      right: var(--side-gap);
-      top: var(--y, 6%); /* 섹션별 수직 위치를 퍼센트로 조정 */
-      transform: translateY(0);
+    /* 0913C.jpg 이후 1열 동영상 */
+    .media-section {
+      background: #eceaec;
+      padding-left: 7.5%;
+      padding-right: 7.5%;
+      padding-bottom: 80px;
       box-sizing: border-box;
     }
 
-    /* 세로 스택용 (2개로 교체됨) */
     .video-stack {
       display: flex;
       flex-direction: column;
-      gap: var(--grid-gap);
+      gap: 12px;
+      padding: 12px 0;
     }
+
     .video-stack video {
       width: 100%;
       height: auto;
-      display: block;
     }
 
-    /* 프로필 그리드 (7개, 마지막 1개는 가운데 정렬) */
+    /* 0913D.jpg 이후 profile 영상 (2열×4행) */
+    .media-grid {
+      background: #eceaec;
+      padding-left: 7.5%;
+      padding-right: 7.5%;
+      padding-bottom: 80px;
+      box-sizing: border-box;
+    }
+
     .grid-stack {
       display: grid;
-      grid-template-columns: 1fr 1fr;  /* 2열 */
-      gap: var(--grid-gap);
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 12px 0;
     }
-    figure { margin: 0; }
 
     .grid-item {
       display: flex;
       flex-direction: column;
     }
 
-    /* 프로필 비디오: 2:3 종횡비 + crop */
+    /* wrapper: 2:3 비율 */
     .video-wrapper {
       position: relative;
       width: 100%;
-      aspect-ratio: 2 / 3;  /* 2:3 고정 */
+      aspect-ratio: 2 / 3;
       overflow: hidden;
       background: #000;
     }
+
     .video-wrapper video {
       width: 100%;
       height: 100%;
-      object-fit: cover;    /* 넘치는 부분 crop */
-      display: block;
+      object-fit: cover;
     }
 
-    /* 캡션 스타일 (wrapper 밖, 아래) */
     .grid-item figcaption {
       margin-top: 6px;
       text-align: left;
@@ -100,100 +95,91 @@
       word-break: break-all;
     }
 
-    /* 마지막 아이템만 단독 중앙 정렬 */
-    .grid-stack .grid-item:last-child {
-      grid-column: 1 / -1;       /* 두 컬럼을 걸치되 */
-      justify-self: center;      /* 중앙 정렬 */
-      width: calc(50% - (var(--grid-gap) / 2)); /* 2열 중 한 칸 너비와 비슷하게 */
-      max-width: 100%;
-    }
-
-    /* iOS 자동재생 권장 조합: autoplay + muted + playsinline (+ loop) */
+    figure { margin: 0; }
   </style>
 </head>
 <body>
   <main class="container">
-
-    <!-- 배경 0913A -->
-    <section class="bg-block">
+    <div class="stack">
       <img src="0913A.jpg" alt="0913A 이미지" />
-      <!-- 필요 시 이 배경 위에도 overlay를 추가할 수 있습니다 -->
-    </section>
-
-    <!-- 배경 0913B -->
-    <section class="bg-block">
       <img src="0913B.jpg" alt="0913B 이미지" />
-    </section>
-
-    <!-- 배경 0913C + 오버레이(세로 스택: 기존 7개 → 2개로 교체) -->
-    <section class="bg-block">
       <img src="0913C.jpg" alt="0913C 이미지" />
-      <!-- 같은 위치/같은 여백: 좌우 7.5%, top은 --y로 조정 -->
-      <div class="overlay" style="--y: 6%;">
-        <div class="video-stack">
-          <video src="1-2.mp4" autoplay muted playsinline loop preload="metadata"></video>
-          <video src="2-2.mp4" autoplay muted playsinline loop preload="metadata"></video>
-        </div>
+    </div>
+
+    <!-- 0913C.jpg 다음: 1열 동영상 -->
+    <section class="media-section">
+      <div class="video-stack">
+        <video src="1-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="2-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="3-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="4-3.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="5-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="6-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="7-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
       </div>
     </section>
 
-    <!-- 배경 0913D + 오버레이(프로필 7개, 마지막 줄 1개만 중앙) -->
-    <section class="bg-block">
+    <div class="stack">
       <img src="0913D.jpg" alt="0913D 이미지" />
-      <div class="overlay" style="--y: 6%;">
-        <div class="grid-stack">
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile1A.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>김연아</figcaption>
-          </figure>
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile1B.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>나경호</figcaption>
-          </figure>
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile2A.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>나정운</figcaption>
-          </figure>
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile2B.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>이마드리드</figcaption>
-          </figure>
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>이정민</figcaption>
-          </figure>
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile3B.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>이지윤</figcaption>
-          </figure>
-          <!-- 마지막 1개: 자동으로 중앙 정렬되도록 CSS 적용됨 -->
-          <figure class="grid-item">
-            <div class="video-wrapper">
-              <video src="profile4A.mp4" autoplay muted playsinline loop preload="metadata"></video>
-            </div>
-            <figcaption>이창민</figcaption>
-          </figure>
-        </div>
+    </div>
+
+    <!-- 0913D.jpg 다음: profile 비디오 (2열×4행) -->
+    <section class="media-grid">
+      <div class="grid-stack">
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile1A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>김연아</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile1B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>나경호</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile2A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>나정운</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile2B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>이마드리드</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>이정민</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile3B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>이지윤</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile4A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>이창민</figcaption>
+        </figure>
+        <figure class="grid-item">
+          <div class="video-wrapper">
+            <video src="profile4B.mp4" autoplay muted playsinline loop preload="metadata"></video>
+          </div>
+          <figcaption>홍성현</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- 배경 0913E -->
-    <section class="bg-block">
+    <div class="stack">
       <img src="0913E.jpg" alt="0913E 이미지" />
-    </section>
-
+    </div>
   </main>
 </body>
 </html>
