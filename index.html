@@ -27,7 +27,7 @@
       height: auto;
     }
 
-    /* 0913C.jpg 이후 1열 동영상 */
+    /* 0920C.jpg 이후 1열 동영상 */
     .media-section {
       background: #eceaec;
       padding-left: 7.5%;
@@ -48,7 +48,7 @@
       height: auto;
     }
 
-    /* 0913D.jpg 이후 profile 영상 (2열×4행) */
+    /* 0920D.jpg 이후 profile 영상 (2열×4행) */
     .media-grid {
       background: #eceaec;
       padding-left: 7.5%;
@@ -96,34 +96,54 @@
     }
 
     figure { margin: 0; }
+
+    /* 0920B.jpg 다음: 가운데 정렬 단일 비디오 */
+    .center-video {
+      display: flex;
+      justify-content: center;
+      padding: 12px 0;
+      box-sizing: border-box;
+      background: #eceaec;
+    }
+    .center-video video {
+      width: 72%;
+      height: auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
   <main class="container">
+    <!-- 상단 이미지: 0920A, 0920B -->
     <div class="stack">
-      <img src="0913A.jpg" alt="0913A 이미지" />
-      <img src="0913B.jpg" alt="0913B 이미지" />
-      <img src="0913C.jpg" alt="0913C 이미지" />
+      <img src="0920A.jpg" alt="0920A 이미지" />
+      <img src="0920B.jpg" alt="0920B 이미지" />
     </div>
 
-    <!-- 0913C.jpg 다음: 1열 동영상 -->
+    <!-- 0920B.jpg 다음: 가운데 정렬 단일 비디오 -->
+    <section class="center-video">
+      <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
+    </section>
+
+    <!-- 나머지 이미지: 0920C, 0920D -->
+    <div class="stack">
+      <img src="0920C.jpg" alt="0920C 이미지" />
+      <img src="0920D.jpg" alt="0920D 이미지" />
+    </div>
+
+    <!-- 0920D.jpg 다음: 1열 동영상 -->
     <section class="media-section">
       <div class="video-stack">
-        <video src="1-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="2-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="3-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="4-3.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="5-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="6-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
-        <video src="7-2.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="clip01.mp4"  autoplay muted playsinline loop preload="metadata"></video>
+        <video src="clip02.mp4"  autoplay muted playsinline loop preload="metadata"></video>
       </div>
     </section>
 
     <div class="stack">
-      <img src="0913D.jpg" alt="0913D 이미지" />
+      <img src="0920E.jpg" alt="0920E 이미지" />
     </div>
 
-    <!-- 0913D.jpg 다음: profile 비디오 (2열×4행) -->
+    <!-- 0920E.jpg 다음: profile 비디오 (2열×4행) -->
     <section class="media-grid">
       <div class="grid-stack">
         <figure class="grid-item">
@@ -152,12 +172,6 @@
         </figure>
         <figure class="grid-item">
           <div class="video-wrapper">
-            <video src="profile3A.mp4" autoplay muted playsinline loop preload="metadata"></video>
-          </div>
-          <figcaption>이정민</figcaption>
-        </figure>
-        <figure class="grid-item">
-          <div class="video-wrapper">
             <video src="profile3B.mp4" autoplay muted playsinline loop preload="metadata"></video>
           </div>
           <figcaption>이지윤</figcaption>
@@ -178,7 +192,7 @@
     </section>
 
     <div class="stack">
-      <img src="0913E.jpg" alt="0913E 이미지" />
+      <img src="0920F.jpg" alt="0920F 이미지" />
     </div>
   </main>
 </body>
